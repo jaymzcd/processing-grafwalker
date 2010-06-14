@@ -122,12 +122,16 @@ class Walker {
         println("Walker is dead - outside canvas");
     } else {
       
-      for(int i=0; i<polys.size(); i++) {
-        Polygon p = (Polygon)polys.get(i);
-        if (p.pointBounded(x0, y0)) {
-          isBounded = true;
-          break;
-        }  
+      if(CHECK_BOUNDS) {
+        for(int i=0; i<polys.size(); i++) {
+          Polygon p = (Polygon)polys.get(i);
+          if (p.pointBounded(x0, y0)) {
+            isBounded = true;
+            break;
+          }  
+        }
+      } else {
+        isBounded = true; 
       }
       
       if (isBounded) {
@@ -224,7 +228,7 @@ int delta_max = 20;
 boolean melted = false;
 color[] palette;
 String MODE = "poly";
-boolean DRAW_BOUNDS, BURST = true;
+boolean DRAW_BOUNDS, BURST, CHECK_BOUNDS = true;
 
 void setup(){
   size(1000, 1000);
@@ -407,5 +411,8 @@ void keyPressed() {
     HMAX -= 30;
     println("Hue range: "+HMIN+" → "+HMAX);
     palette = getPalatte(PMAX, HMIN, HMAX);     
+  }
+  if(key=='t') {
+    CHECK_BOUNDS = !CHECK_BOUNDS;
   }
 }
